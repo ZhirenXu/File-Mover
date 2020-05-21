@@ -4,3 +4,7 @@ Python script to move TOC file, .zip and .tiff with autorename function
 Move TOC (name for metadata xml file used by certain vendor), .zip file and TIFF file into appointed folder.  
 In future user can appoint what type of file need to be removed.  
 ### Demo
+When there is file with same name under destiny folder:
+![conflict demo](https://github.com/ZhirenXu/File-Mover/blob/master/conflict%20demo.png)
+Under normal situation:
+![normal demo](https://github.com/ZhirenXu/File-Mover/blob/master/normal%20demo.png)  
