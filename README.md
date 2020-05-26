@@ -8,3 +8,6 @@ When there is file with same name under destiny folder:
 ![conflict demo](https://github.com/ZhirenXu/File-Mover/blob/master/conflict%20demo.png)
 Under normal situation:
 ![normal demo](https://github.com/ZhirenXu/File-Mover/blob/master/normal%20demo.png)  
+### TODO
+Let user choose what kind of file to copy freely
+Produce Log while running
