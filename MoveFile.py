@@ -65,7 +65,10 @@ def walkThrough(srcFolderDir, destFolderDir, i):
                     renameAndCopy(fileName, dirPath, destFolderDir, i)
                     i = i + 1
                     print("Done!")
-                print(fileName, " in ", dirPath, " is copied to destination.\n")                
+                print(fileName, " in ", dirPath, " is copied to destination.\n")
+                os.chmod(srcFileDir, 0o777)
+                os.remove(srcFileDir)
+                print("Origin File Deleted.\n")
        
 
 ## Copy a fuile from absoulte path to a file directory
