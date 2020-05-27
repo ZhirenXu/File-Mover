@@ -15,9 +15,9 @@ def main():
     
 def welcome():
     print("******************************")
-    print("*     File Mover v1.0.0      *")
+    print("*     File Mover v1.0.2      *")
     print("*     Author: Zhiren Xu      *")
-    print("*  published data: 5/23/20   *")
+    print("*  published data: 5/27/20   *")
     print("******************************")
 
 def end(destFolder):
