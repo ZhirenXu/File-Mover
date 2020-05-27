@@ -10,12 +10,16 @@ def main():
     welcome()
     srcFolder = getSrcDir()
     destFolder = getDestDir()
+    while srcFolder == destFolder:
+        print("Path for source folder and destiny folder can't be the same.")
+        srcFolder = getSrcDir()
+        destFolder = getDestDir()
     walkThrough(srcFolder, destFolder, i)
     end(destFolder)
     
 def welcome():
     print("******************************")
-    print("*     File Mover v1.0.2      *")
+    print("*     File Mover v1.0.4      *")
     print("*     Author: Zhiren Xu      *")
     print("*  published data: 5/27/20   *")
     print("******************************")
@@ -48,10 +52,11 @@ def getDestDir():
 # @param    i
 #           iterator to rename file
 def walkThrough(srcFolderDir, destFolderDir, i):
-    #i for rename file with duplicate names    
+    #i for rename file with duplicate names
+   
     for dirPath, dirNames, files in os.walk(srcFolderDir):
+        hasDuplicate = 0
         display(dirPath, files)
-        print("\n")
         if len(files) == 0:
             print("Noting to move. \n")
         for fileName in files:
@@ -61,11 +66,14 @@ def walkThrough(srcFolderDir, destFolderDir, i):
                 try:
                     moveFile(srcFileDir, destFolderDir)
                 except:
-                    print("Duplicate filename detected. Change file name and copy now...", end = "")
+                    hasDuplicate = 1
+                    print("Duplicate filename detected. Change file name and move now...", end = "")
                     renameAndMove(fileName, dirPath, destFolderDir, i)
-                    i = i + 1
                     print("Done!")
-                print(fileName, " in ", dirPath, " is moved to destination.")   
+                print(fileName, " in ", dirPath, " is moved to destination.\n")
+        if hasDuplicate == 1:
+            i = i + 1
+        print("Target file not found. \n")
 
 ## Copy a fuile from absoulte path to a file directory
 # @param    src
@@ -94,10 +102,11 @@ def renameAndMove(fileName, currentDirPath, destDirPath, i):
     
     originName = fileName
     os.chdir(currentDirPath)
-    os.rename(fileName, str(i) + fileName)
-    updatedFilePath = os.path.abspath(str(i) + fileName)
+    index = fileName.find('.')
+    newName = fileName[:index] + "(" + str(i) + ")" + fileName[index:]
+    os.rename(fileName, newName)
+    updatedFilePath = os.path.abspath(newName)
     shutil.move(updatedFilePath, destDirPath)
-    os.rename(str(i) + fileName, originName)
 
 ## display files under this directory (no folders)
 # @param    path
