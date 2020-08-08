@@ -5,8 +5,7 @@ import os.path
 
 def main():
     i = 0
-    
-    #Greeting()
+    fileType = []
     welcome()
     srcFolder = getSrcDir()
     destFolder = getDestDir()
@@ -14,14 +13,15 @@ def main():
         print("Path for source folder and destiny folder can't be the same.")
         srcFolder = getSrcDir()
         destFolder = getDestDir()
-    walkThrough(srcFolder, destFolder, i)
+    fileType = getFileType()
+    walkThrough(srcFolder, destFolder, i, fileType)
     end(destFolder)
     
 def welcome():
     print("******************************")
-    print("*     File Mover v1.0.4      *")
+    print("*     File Mover v1.1.0      *")
     print("*     Author: Zhiren Xu      *")
-    print("*  published data: 5/27/20   *")
+    print("*   published data: 8/8/20   *")
     print("******************************")
 
 def end(destFolder):
@@ -44,6 +44,22 @@ def getDestDir():
     print("\n")
     return path
 
+def getFileType():
+    fileSuffix = []
+    fileType= ""
+    
+    print("Please enter suffix of files you want to move, (e.g. .zip; .txt), each at a time: ")
+    fileType = input()
+    fileSuffix.append(fileType)
+    while (1):
+        print("If you perfer to move other kind of file, please type below. \nIf not, just hit the enter key: ")
+        fileType = input()
+        if(len(fileType) > 0):
+            fileSuffix.append(fileType)
+        else:
+            break
+    return fileSuffix
+
 ## Main process of file mover
 # @param    srcFolderDir
 #           the absolute path of source folder
@@ -51,30 +67,28 @@ def getDestDir():
 #           the absoulte path of destiny folder
 # @param    i
 #           iterator to rename file
-def walkThrough(srcFolderDir, destFolderDir, i):
-    #i for rename file with duplicate names
-   
-    for dirPath, dirNames, files in os.walk(srcFolderDir):
-        hasDuplicate = 0
-        display(dirPath, files)
-        if len(files) == 0:
-            print("Noting to move. \n")
-        for fileName in files:
-            if ("TOC" in fileName) or (".zip" in fileName) or (".tif" in fileName):
+# @param    fileTypeList
+#           A list contain all target files' suddix or part of file name
+def walkThrough(srcFolderDir, destFolderDir, i, fileTypeList):
+ for dirPath, dirNames, files in os.walk(srcFolderDir):
+    display(dirPath, files)
+    print("\n")
+    if len(files) == 0:
+        print("Noting to move. \n")
+    for fileName in files:
+        for suffix in fileTypeList:
+            if suffix in fileName:
                 srcFileDir = dirPath + "\\" + fileName
                 #when copy file with same name to one directory, it will raise an error
                 try:
                     moveFile(srcFileDir, destFolderDir)
                 except:
-                    hasDuplicate = 1
-                    print("Duplicate filename detected. Change file name and move now...", end = "")
+                    print("Duplicate filename detected. Change file name and copy now...", end = "")
                     renameAndMove(fileName, dirPath, destFolderDir, i)
+                    i = i + 1
                     print("Done!")
                 print(fileName, " in ", dirPath, " is moved to destination.\n")
-        if hasDuplicate == 1:
-            i = i + 1
-        print("Target file not found. \n")
-
+                
 ## Copy a fuile from absoulte path to a file directory
 # @param    src
 #           absoulte path of file which you want to copy
@@ -103,7 +117,10 @@ def renameAndMove(fileName, currentDirPath, destDirPath, i):
     originName = fileName
     os.chdir(currentDirPath)
     index = fileName.find('.')
-    newName = fileName[:index] + "(" + str(i) + ")" + fileName[index:]
+    if(index == -1):
+        newName = fileName + str(i)
+    else:
+        newName = fileName[:index] + "(" + str(i) + ")" + fileName[index:]
     os.rename(fileName, newName)
     updatedFilePath = os.path.abspath(newName)
     shutil.move(updatedFilePath, destDirPath)
@@ -114,7 +131,7 @@ def renameAndMove(fileName, currentDirPath, destDirPath, i):
 # @param    filesList
 #           A list of files under souce folder
 def display(path, filesList):
-    print(f'Found these files in ', path, ": ")
+    print('Found these files in ', path, ": ")
     for file in filesList:
         print(" |-", file)
         
