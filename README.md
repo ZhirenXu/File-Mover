@@ -10,6 +10,5 @@ When there is file with same name under destiny folder:
 ![conflict demo](https://github.com/ZhirenXu/File-Mover/blob/master/conflict.png)  
 Under normal situation:
 ![normal demo](https://github.com/ZhirenXu/File-Mover/blob/master/normal.jpg)  
-### TODO
-Let user choose what kind of file to copy freely  
+### TODO  
 Produce Log while running
